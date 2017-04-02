@@ -1,5 +1,5 @@
 
-#Akka.Js Bindings
+# Akka.Js Bindings
 
 *this project is EXPERIMENTAL*
 
