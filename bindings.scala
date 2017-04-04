@@ -8,19 +8,27 @@ import scala.scalajs.js.annotation.{JSExportTopLevel, JSExportAll}
 
 import akka.actor._
 
-@JSExportTopLevel("Configuration")
+@JSExportTopLevel("ConfigFactory")
 @JSExportAll
-object JSConfiguration {
-
-  var base = default()
+object ConfigFactory {
 
   def default(): Config = akkajs.Config.default
   def parse(str: String): Config = Config(shocon.Config(str))
+
+}
+
+@JSExportTopLevel("Configuration")
+@JSExportAll
+class Configuration(str: String) {
+
+  var conf = ConfigFactory.default()
   def add(str: String): Unit = {
-    val tmp = base
-    base = parse(str).withFallback(tmp)
+    val tmp = conf
+    conf = ConfigFactory.parse(str).withFallback(tmp)
   }
-  def get() = base
+  def get() = conf
+
+  add(str)
 }
 
 @JSExportTopLevel("ActorSystem")
@@ -39,71 +47,93 @@ object ActorSystem {
 }
 
 @JSExportAll
-trait ActorSystemImpl {
-  val system: akkaactor.ActorSystem
+trait CanSpawn {
+  type Spawner = {
+    def actorOf(props: akkaactor.Props, name: String): akkaactor.ActorRef
+    def actorOf(props: akkaactor.Props): akkaactor.ActorRef
+  }
 
-  def log() = system.log.info("ciao")
-  def logError() = system.log.error("ciao")
-
-  def logConfig() = system.logConfiguration()
+  def spawnFrom: Spawner
 
   def spawn(actor: Actor) = new ActorRef {
     val actorRef =
-      if (actor.name != "") system.actorOf(Props(actor.actor), actor.name)
-      else system.actorOf(Props(actor.actor))
+      if (actor.name != "") spawnFrom.actorOf(Props(actor.actor), actor.name)
+      else spawnFrom.actorOf(Props(actor.actor))
   }
 
-  def terminate() = system.terminate()
 }
 
 @JSExportAll
 trait ActorRef {
   val actorRef: akkaactor.ActorRef
 
-  def tell(msg: Any) = actorRef ! msg
+  def path(): String = actorRef.path.toString
+
+  def tell(msg: Any) = actorRef.tell(msg, null)
   def tell(msg: Any, sender: ActorRef) = actorRef.tell(msg, sender.actorRef)
 
-  def kill() = actorRef ! akkaactor.PoisonPill
+  def kill() = tell(akkaactor.PoisonPill)
+}
+
+@JSExportAll
+trait ActorSelection {
+  val actorSel: akkaactor.ActorSelection
+
+  def tell(msg: Any) = actorSel.tell(msg, null)
+  def tell(msg: Any, sender: akkaactor.ActorRef) = actorSel.tell(msg, sender)
+
+  def kill() = tell(akkaactor.PoisonPill)
+}
+
+@JSExportAll
+trait ActorSystemImpl extends CanSpawn {
+  val system: akkaactor.ActorSystem
+  def spawnFrom = system
+
+  def select(path: String) = new ActorSelection {
+    val actorSel = system.actorSelection(path)
+  }
+
+  def terminate() = system.terminate()
 }
 
 @JSExportTopLevel("Actor")
 @JSExportAll
 class Actor(
   behavior: js.ThisFunction1[Actor, Any, Unit],
-  val name: String = "",
-  preStart: () => Unit = () => (),
-  postStart: () => Unit = () => ()
-) {
+  preStart: js.ThisFunction0[Actor, Unit] = (_ : Actor) => Unit,
+  postStop: js.ThisFunction0[Actor, Unit] = (_ : Actor) => Unit,
+  var name: String = ""
+) extends CanSpawn {
   jsActor =>
 
   var innerSelf: akkaactor.Actor = _
+  def spawnFrom = innerSelf.context
+
+  def path(): String = innerSelf.self.path.toString
+  def parent(): ActorRef = newAR(innerSelf.context.parent)
+  def children(): js.Array[ActorRef] =
+    js.Array(innerSelf.context.children.map(newAR).toSeq: _*)
 
   lazy val actor: akkaactor.Actor = new akkaactor.Actor {
     self =>
-
     jsActor.innerSelf = self
+    name = self.self.path.name
 
-    override def preStart() = jsActor.preStart()
-    override def postStop() = jsActor.postStart()
-    def receive = {
-      case any =>
-        val s = sender()
-        jsActor.behavior(jsActor, any)
-    }
+    override def preStart() = jsActor.preStart(jsActor)
+    override def postStop() = jsActor.postStop(jsActor)
+
+    def receive = {case any => jsActor.behavior(jsActor, any)}
   }
 
   def become(behavior: js.ThisFunction1[Actor, Any, Unit]) =
     innerSelf.context.become{case any => behavior(jsActor, any)}
 
-  def sender() = new ActorRef{
-    val actorRef = innerSelf.context.sender()
-    override def tell(msg: Any) = actorRef.tell(msg, innerSelf.context.self)
-  }
+  def sender() = newAR(innerSelf.context.sender())
 
-  def spawn(actor: Actor) = new ActorRef {
-    val actorRef =
-      if (actor.name != "") innerSelf.context.actorOf(Props(actor.actor), actor.name)
-      else innerSelf.context.actorOf(Props(actor.actor))
+  private def newAR(ar: akkaactor.ActorRef) = new ActorRef {
+    val actorRef = ar
+    override def tell(msg: Any) = actorRef.tell(msg, innerSelf.context.self)
   }
 
 }

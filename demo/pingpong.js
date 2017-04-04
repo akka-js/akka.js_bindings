@@ -1,10 +1,10 @@
 var akka = require("../bin/akkajs.js")
 
-akka.Configuration.add(`akka {
+var config = new akka.Configuration(
+    `akka {
       loglevel = "DEBUG"
       stdout-loglevel = "DEBUG"
-    }`)
-var config = akka.Configuration.get()
+    }`).get()
 
 var system = akka.ActorSystem.create("pingpong", config)
 
