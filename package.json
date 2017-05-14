@@ -4,7 +4,7 @@
   "main": "index.js",
   "description": "Akka Actor Framework available for JS.",
   "bin": {
-    "akkajs": "lib/akkajs.js"
+    "akkajs": "bin.sh"
   },
   "scripts": {
     "prepublish": "sbt deploy"
