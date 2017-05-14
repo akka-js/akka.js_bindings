@@ -17,16 +17,47 @@ Install the module:
 npm install akkajs
 ```
 
-An example Actor based greeter looks like follows:
+A simple Ping Pong between two actors looks like:
 
 ```javascript
-const akka = require(`akkajs`)
+var akkajs = require("akkajs")
+
+var system = akkajs.ActorSystem.create()
+var pinger = system.spawn(
+    new akkajs.Actor(
+        function (msg) {
+            if (msg == "ping") {
+                console.log("RECEIVED PING")
+                this.sender().tell("pong")
+            }
+        }
+    )
+)
+
+var ponger = system.spawn(
+    new akkajs.Actor(
+        function (msg) {
+            if (msg == "pong") {
+                console.log("RECEIVED PONG")
+                this.sender().tell("ping")
+            }
+        }
+    )
+)
+
+pinger.tell("ping", ponger)
+```
+
+An Actor based greeter on Node looks like follows:
+
+```javascript
+const akkajs = require(`akkajs`)
 const readline = require(`readline`)
 
-var system = akka.ActorSystem.create(`helloworld`)
+var system = akkajs.ActorSystem.create(`helloworld`)
 
 const greeter = system.spawn(
-  new akka.Actor(
+  new akkajs.Actor(
     function(name) {
       console.log(`Hello ${name}`)
     }
