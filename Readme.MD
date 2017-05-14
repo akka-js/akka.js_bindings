@@ -1,6 +1,8 @@
 
 # Akka.Js Bindings
 
+[![NPM](https://nodei.co/npm/akkajs.png?compact=true)](https://nodei.co/npm/akkajs/)
+
 *this project is EXPERIMENTAL*
 
 This project aim to bring Akka powerful framework available for JS applications.
