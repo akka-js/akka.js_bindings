@@ -1,3 +1,3 @@
 module.exports = {
-  'akkajs':  require('./lib/akkajs.js').path()
+  'akkajs':  require('./lib/akkajs.js')
 };
