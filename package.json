@@ -1,10 +1,10 @@
 {
   "name": "akkajs",
-  "version": "0.0.1",
-  "main": "./lib/akkajs.js",
+  "version": "0.0.4",
+  "main": "index.js",
   "description": "Akka Actor Framework available for JS.",
   "bin": {
-    "akkajs": "bin/akkajs"
+    "akkajs": "lib/akkajs.js"
   },
   "scripts": {
     "prepublish": "sbt deploy"
