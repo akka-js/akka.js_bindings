@@ -11,6 +11,7 @@ lazy val akkajs =
       libraryDependencies ++= Seq(
         "org.akka-js" %%% "akkajsactor" % "1.2.5.1"
       ),
+      scalaJSUseMainModuleInitializer in Global := true,
       scalaJSModuleKind := ModuleKind.CommonJSModule,
       skip in packageJSDependencies := false,
       deploy := {
