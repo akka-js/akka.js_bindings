@@ -11,7 +11,7 @@ const system = akka.ActorSystem.create(
 
 //First of all describe your Actor
 class Shouter extends akka.Actor {
-  constructor(length) {
+  constructor() {
     super(
       function(str) {
         console.log(str.toUpperCase())

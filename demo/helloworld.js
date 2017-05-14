@@ -1,4 +1,4 @@
-const akka = require(`../lib/akkajs`)
+const akka = require(`akkajs`)
 const readline = require(`readline`)
 
 var system = akka.ActorSystem.create(`helloworld`)

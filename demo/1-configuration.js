@@ -1,4 +1,4 @@
-const akka = require(`../lib/akkajs`)
+const akka = require(`akkajs`)
 
 //Configuration is based on the HOCON standard
 //https://github.com/typesafehub/config/blob/master/HOCON.md

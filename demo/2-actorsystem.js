@@ -1,4 +1,4 @@
-const akka = require(`../lib/akkajs`)
+const akka = require(`akkajs`)
 
 //An ActorSystem is a container and the environment for your Actors
 //To create an ActorSystem you have several options:
