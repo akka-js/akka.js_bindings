@@ -19,7 +19,7 @@ object ConfigFactory {
 
 @JSExportTopLevel("Configuration")
 @JSExportAll
-class Configuration(str: String) {
+class Configuration(str: String = "") {
 
   var conf = ConfigFactory.default()
   def add(str: String): Unit = {
@@ -28,7 +28,8 @@ class Configuration(str: String) {
   }
   def get() = conf
 
-  add(str)
+  if (str.trim() != "")
+    add(str)
 }
 
 @JSExportTopLevel("ActorSystem")

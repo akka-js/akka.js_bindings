@@ -1,4 +1,4 @@
-var akka = require("../bin/akkajs.js")
+const akka = require("../lib/akkajs")
 
 var config = new akka.Configuration(
     `akka {

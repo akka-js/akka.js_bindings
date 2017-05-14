@@ -3,16 +3,16 @@
 
 *this project is EXPERIMENTAL*
 
+This project aim to bring Akka powerful framework available for JS applications.
+
+This implementation is to be considered "on-going" but feel free to file an issue if you require a specific Akka functionality that isn't yet exposed in the current API.
+
 Feedbacks are highly appreciated!
 
-Right now this project is a playground to experiment how Akka.Js can expose a useful API to JavaScript developers.
-
-To run the pingpong example simply clone this project and:
+How to use is described through the `demo` projects.
+To run the examples simply clone this project and:
 ```bash
+sbt deploy
 cd demo
-node
-> require("./pingpong")
-> require("./tree")
+node <example-name>
 ```
-
-If you wanna contribute but have trouble in building, please join Akka.js gitter channel.

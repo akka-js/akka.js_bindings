@@ -1,0 +1,28 @@
+{
+  "name": "akkajs",
+  "version": "0.0.1",
+  "main": "./lib/akkajs.js",
+  "description": "Akka Actor Framework available for JS.",
+  "bin": {
+    "akkajs": "bin/akkajs"
+  },
+  "scripts": {
+    "prepublish": "sbt deploy"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/akka-js/akka.js_bindings.git"
+  },
+  "keywords": [
+    "scalajs",
+    "akka",
+    "akkajs",
+    "actor"
+  ],
+  "author": "Andrea Peruffo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/akka-js/akka.js_bindings/issues"
+  },
+  "homepage": "https://github.com/akka-js/akka.js_bindings#readme"
+}
