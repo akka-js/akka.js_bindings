@@ -111,6 +111,8 @@ class Actor(
   var innerSelf: akkaactor.Actor = _
   def spawnFrom = innerSelf.context
 
+  var ref: ActorRef = _
+
   def path(): String = innerSelf.self.path.toString
   def parent(): ActorRef = newAR(innerSelf.context.parent)
   def children(): js.Array[ActorRef] =
@@ -119,6 +121,7 @@ class Actor(
   lazy val actor: akkaactor.Actor = new akkaactor.Actor {
     self =>
     jsActor.innerSelf = self
+    jsActor.ref = newAR(self.self)
     name = self.self.path.name
 
     override def preStart() = jsActor.preStart(jsActor)
