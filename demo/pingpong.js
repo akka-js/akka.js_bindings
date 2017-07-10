@@ -1,30 +1,44 @@
-const akka = require("akkajs")
+const akka = require(`../lib/akkajs`)
 
-var config = new akka.Configuration(
+let config = new akka.Configuration(
     `akka {
       loglevel = "DEBUG"
       stdout-loglevel = "DEBUG"
     }`).get()
 
-var system = akka.ActorSystem.create("pingpong", config)
+const system = akka.ActorSystem.create("pingpong", config)
 
-var pinger = system.spawn(new akka.Actor(
-  function(msg) {
-    console.log("I'm pinger and I received "+msg)
-    this.sender().tell("PING")
+class Pinger extends akka.Actor {
+  constructor() {
+    super()
+    this.name = "pinger"
+    this.receive = (msg) => {
+      console.log("I'm pinger and I received "+msg)
+      this.sender().tell("PING")
+    }
   }
-))
+}
 
-var i = 0
-var ponger = system.spawn(new akka.Actor(function(msg) {
-  console.log("I'm ponger and I received "+msg)
-  this.sender().tell("PONG")
-  i++
-  if (i > 100)
-    this.become( function(msg) {
-      this.sender().tell("PONG, I say!")
-    } )
-}))
+let pinger = system.spawn(new Pinger())
+
+class Ponger extends akka.Actor {
+  constructor() {
+    super()
+    this.name = "ponger"
+    this.i = 0
+    this.receive = (msg) => {
+      console.log("I'm ponger and I received "+msg+" i is "+this.i)
+      this.sender().tell("PONG")
+      this.i++
+      if (this.i > 100)
+        this.become( (msg) => {
+          this.sender().tell("PONG, I say!")
+        } )
+    }
+  }
+}
+
+let ponger = system.spawn(new Ponger())
 
 setTimeout(function() {
   console.log("Starting...")

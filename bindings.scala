@@ -61,7 +61,6 @@ trait CanSpawn {
       if (actor.name != "") spawnFrom.actorOf(Props(actor.actor), actor.name)
       else spawnFrom.actorOf(Props(actor.actor))
   }
-
 }
 
 @JSExportAll
@@ -100,44 +99,54 @@ trait ActorSystemImpl extends CanSpawn {
 
 @JSExportTopLevel("Actor")
 @JSExportAll
-class Actor(
-  behavior: js.ThisFunction1[Actor, Any, Unit],
-  preStart: js.ThisFunction0[Actor, Unit] = (_ : Actor) => Unit,
-  postStop: js.ThisFunction0[Actor, Unit] = (_ : Actor) => Unit,
-  var name: String = ""
-) extends CanSpawn {
+class Actor() extends CanSpawn {
   jsActor =>
 
-  var innerSelf: akkaactor.Actor = _
-  def spawnFrom = innerSelf.context
+  // Functions intended to be overloaded
+  var name: String = ""
 
-  var ref: ActorRef = _
+  var receive: js.Function1[Any, Unit] = null
 
-  def path(): String = innerSelf.self.path.toString
-  def parent(): ActorRef = newAR(innerSelf.context.parent)
+  var preStart: js.Function0[Unit] = () => Unit
+
+  var postStop: js.Function0[Unit] = () => Unit
+
+  // API
+  def path(): String = ar.path.toString
+  def parent(): ActorRef = newAR(innerContext.parent)
   def children(): js.Array[ActorRef] =
-    js.Array(innerSelf.context.children.map(newAR).toSeq: _*)
+    js.Array(innerContext.children.map(newAR).toSeq: _*)
+
+  def become(behavior: js.Function1[Any, Unit]) =
+    innerContext.become{case any => behavior(any)}
+
+  def sender() = newAR(innerContext.sender())
+
+  //Inner implementation
+  var ar: akkaactor.ActorRef = _
+  var innerContext: akkaactor.ActorContext = _
 
   lazy val actor: akkaactor.Actor = new akkaactor.Actor {
-    self =>
-    jsActor.innerSelf = self
-    jsActor.ref = newAR(self.self)
-    name = self.self.path.name
+    if (js.isUndefined(jsActor.receive))
+      throw new Exception("Actor receive method not defiend")
 
-    override def preStart() = jsActor.preStart(jsActor)
-    override def postStop() = jsActor.postStop(jsActor)
+    name = jsActor.name
 
-    def receive = {case any => jsActor.behavior(jsActor, any)}
+    override def preStart() = {
+      jsActor.ar = self
+      jsActor.innerContext = context
+      jsActor.preStart()
+    }
+    override def postStop() = jsActor.postStop()
+
+    def receive = {case any => jsActor.receive(any)}
   }
 
-  def become(behavior: js.ThisFunction1[Actor, Any, Unit]) =
-    innerSelf.context.become{case any => behavior(jsActor, any)}
+  def spawnFrom = innerContext
 
-  def sender() = newAR(innerSelf.context.sender())
-
-  private def newAR(ar: akkaactor.ActorRef) = new ActorRef {
-    val actorRef = ar
-    override def tell(msg: Any) = actorRef.tell(msg, innerSelf.context.self)
+  private def newAR(_ar: akkaactor.ActorRef) = new ActorRef {
+    val actorRef = _ar
+    override def tell(msg: Any) = actorRef.tell(msg, ar)
   }
 
 }

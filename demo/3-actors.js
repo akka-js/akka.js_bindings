@@ -17,8 +17,18 @@ class Shouter extends akka.Actor {
         console.log(str.toUpperCase())
       }
     )
+    this.receive = this.receive.bind(this);
+  }
+  receive = () => {
+    this
   }
 }
+
+createActor({
+  receive() {
+    this.
+  }
+})
 
 //akka.Actor accepts 4 arguments:
 
