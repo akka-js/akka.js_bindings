@@ -5,15 +5,17 @@ const system = akka.ActorSystem.create(`helloworld`)
 
 class Greeter extends akka.Actor {
   constructor() {
-    super()
-    this.name = "pluto"
-    this.preStart = () => {
-      console.log("prestarting...")
-    }
-    this.receive = (msg) => {
-      console.log(`Hello ${msg}`)
-    }
-  }
+     super()
+     this.name = "pluto"
+     this.preStart = Greeter.prototype.preStart.bind(this)
+     this.receive = Greeter.prototype.receive.bind(this)
+   }
+   preStart() {
+    console.log("prestarting...");
+   }
+   receive(msg) {
+    console.log(`Hello ${msg}`);
+   }
 }
 
 const greeter = system.spawn(new Greeter())
