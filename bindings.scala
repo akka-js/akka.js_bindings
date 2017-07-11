@@ -122,6 +122,8 @@ class Actor() extends CanSpawn {
 
   def sender() = newAR(innerContext.sender())
 
+  def self() = newAR(ar)
+
   //Inner implementation
   var ar: akkaactor.ActorRef = _
   var innerContext: akkaactor.ActorContext = _

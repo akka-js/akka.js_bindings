@@ -1,15 +1,20 @@
-const akka = require(`akkajs`)
+const akka = require(`../lib/akkajs`)
 const readline = require(`readline`)
 
-var system = akka.ActorSystem.create(`helloworld`)
+const system = akka.ActorSystem.create(`helloworld`)
 
-const greeter = system.spawn(
-  new akka.Actor(
-    function(name) {
-      console.log(`Hello ${name}`)
-    }
-  )
-)
+class Greeter extends akka.Actor {
+  constructor() {
+     super()
+     // like what is suggested https://facebook.github.io/react/docs/react-without-es6.html#autobinding
+     this.receive = Greeter.receive.bind(this)
+   }
+   static receive(msg) {
+    console.log(`Hello ${msg}`)
+   }
+}
+
+const greeter = system.spawn(new Greeter())
 
 const rl = readline.createInterface({
   input: process.stdin,
