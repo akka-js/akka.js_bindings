@@ -12,10 +12,10 @@ class Pinger extends akka.Actor {
   constructor() {
     super()
     this.name = "pinger"
-    this.receive = Pinger.receive.bind(this)
+    this.receive = this.receive.bind(this)
   }
 
-  static receive(msg) {
+  receive(msg) {
     console.log("I'm pinger and I received "+msg)
     this.sender().tell("PING")
   }
@@ -28,10 +28,10 @@ class Ponger extends akka.Actor {
     super()
     this.name = "ponger"
     this.i = 0
-    this.receive = Ponger.receive.bind(this)
+    this.receive = this.receive.bind(this)
   }
 
-  static receive(msg) {
+  receive(msg) {
     console.log("I'm ponger and I received "+msg+" i is "+this.i)
     this.sender().tell("PONG")
     this.i++
