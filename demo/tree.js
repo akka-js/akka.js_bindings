@@ -1,33 +1,44 @@
-const akka = require("akkajs")
+const akka = require(`../lib/akkajs`)
 
-var config = new akka.Configuration(
+const config = new akka.Configuration(
     `akka {
       loglevel = "DEBUG"
       stdout-loglevel = "DEBUG"
     }`).get()
 
-var system = akka.ActorSystem.create("pingpong", config)
+const system = akka.ActorSystem.create("pingpong", config)
 
-var count = 0
-var newSon = function(name) {
-  return new akka.Actor(
-    function(msg) {
-      if (msg === "spawn" && count < 10000) {
-        var right = this.spawn(newSon("R"))
-        var left = this.spawn(newSon("L"))
+let count = 0
 
-        count += 2
-        right.tell("spawn")
-        left.tell("spawn")
-      }
-    },
-    function() {console.log("starting "+this.path())},
-    function() {console.log("stopping "+this.path())},
-    name
-  )
+class NodeActor extends akka.Actor {
+  constructor(name) {
+     super()
+     this.name = name
+     this.receive = NodeActor.receive.bind(this)
+     this.preStart = NodeActor.preStart.bind(this)
+     this.postStop = NodeActor.postStop.bind(this)
+   }
+   static receive(msg) {
+     if (msg === "spawn" && count < 10000) {
+       var right = this.spawn(new NodeActor("R"))
+       var left = this.spawn(new NodeActor("L"))
+
+       count += 2
+       right.tell("spawn")
+       left.tell("spawn")
+     }
+   }
+
+   static preStart() {
+     console.log("starting "+this.path())
+   }
+
+   static postStop() {
+     console.log("stopping "+this.path())
+   }
 }
 
-var root = system.spawn(newSon("root"))
+var root = system.spawn(new NodeActor("root"))
 
 root.tell("spawn")
 

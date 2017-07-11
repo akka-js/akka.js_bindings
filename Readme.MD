@@ -22,30 +22,39 @@ npm install akkajs
 A simple Ping Pong between two actors looks like:
 
 ```javascript
-var akkajs = require("akkajs")
+const akkajs = require(`../lib/akkajs`)
 
-var system = akkajs.ActorSystem.create()
-var pinger = system.spawn(
-    new akkajs.Actor(
-        function (msg) {
-            if (msg == "ping") {
-                console.log("RECEIVED PING")
-                this.sender().tell("pong")
-            }
-        }
-    )
-)
+const system = akkajs.ActorSystem.create()
 
-var ponger = system.spawn(
-    new akkajs.Actor(
-        function (msg) {
-            if (msg == "pong") {
-                console.log("RECEIVED PONG")
-                this.sender().tell("ping")
-            }
-        }
-    )
-)
+class Pinger extends akkajs.Actor {
+  constructor() {
+    super()
+    this.name = "pinger"
+    this.receive = Pinger.receive.bind(this)
+  }
+
+  static receive(msg) {
+    console.log("RECEIVED PING")
+    this.sender().tell("pong")
+  }
+}
+
+let pinger = system.spawn(new Pinger())
+
+class Ponger extends akkajs.Actor {
+  constructor() {
+    super()
+    this.name = "ponger"
+    this.receive = Ponger.receive.bind(this)
+  }
+
+  static receive(msg) {
+    console.log("RECEIVED PONG")
+    this.sender().tell("ping")
+  }
+}
+
+let ponger = system.spawn(new Ponger())
 
 pinger.tell("ping", ponger)
 ```
@@ -56,8 +65,30 @@ An Actor based greeter on Node looks like follows:
 const akkajs = require(`akkajs`)
 const readline = require(`readline`)
 
-var system = akkajs.ActorSystem.create(`helloworld`)
+const system = akkajs.ActorSystem.create(`helloworld`)
 
+class Greeter extends akkajs.Actor {
+  constructor() {
+     super()
+     // like what is suggested https://facebook.github.io/react/docs/react-without-es6.html#autobinding
+     this.receive = Greeter.prototype.receive.bind(this)
+   }
+   receive(msg) {
+    console.log(`Hello ${msg}`)
+   }
+}
+
+const greeter = system.spawn(new Greeter())
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+})
+
+rl.question('What is your name? ', (answer) => {
+  greeter.tell(answer)
+  rl.close();
+})
 const greeter = system.spawn(
   new akkajs.Actor(
     function(name) {

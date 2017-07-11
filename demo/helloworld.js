@@ -7,9 +7,9 @@ class Greeter extends akka.Actor {
   constructor() {
      super()
      // like what is suggested https://facebook.github.io/react/docs/react-without-es6.html#autobinding
-     this.receive = Greeter.receive.bind(this)
+     this.receive = Greeter.prototype.receive.bind(this)
    }
-   static receive(msg) {
+   receive(msg) {
     console.log(`Hello ${msg}`)
    }
 }

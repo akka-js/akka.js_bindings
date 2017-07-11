@@ -12,36 +12,27 @@ const system = akka.ActorSystem.create(
 //First of all describe your Actor
 class Shouter extends akka.Actor {
   constructor() {
-    super(
-      function(str) {
-        console.log(str.toUpperCase())
-      }
-    )
-    this.receive = this.receive.bind(this);
+    super()
+    this.receive = Shouter.receive.bind(this);
   }
-  receive = () => {
-    this
+
+  static receive(msg) {
+    console.log(msg.toUpperCase())
   }
 }
 
-createActor({
-  receive() {
-    this.
-  }
-})
+//you can override 4 functions in akka.Actor:
 
-//akka.Actor accepts 4 arguments:
+//receive (MANDATORY) executed everytime a message is received
+//receive e.g. function(arg) { arg }
 
-//behavior executed everytime a message is received
-//behavior e.g. function(arg) { this; arg }
-
-//preStart executed once before an Actor is started
+//preStart (optional) executed once before an Actor is started
 //preStart e.g function() {}
 
-//postStop excuted once before an Actor is stopped
+//postStop (optional) excuted once before an Actor is stopped
 //postStop e.g. function() {}
 
-//name is an optional explicit name for your actor
+//name (optional) explicit name for your actor
 //name = "bho"
 
 //To spawn a top level actor you can call the spawn method on the ActorSystem
