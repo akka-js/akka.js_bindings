@@ -22,7 +22,7 @@ npm install akkajs
 A simple Ping Pong between two actors looks like:
 
 ```javascript
-const akkajs = require(`../lib/akkajs`)
+const akkajs = require(`akkajs`)
 
 const system = akkajs.ActorSystem.create()
 
@@ -30,10 +30,9 @@ class Pinger extends akkajs.Actor {
   constructor() {
     super()
     this.name = "pinger"
-    this.receive = Pinger.receive.bind(this)
+    this.receive = this.receive.bind(this)
   }
-
-  static receive(msg) {
+  receive(msg) {
     console.log("RECEIVED PING")
     this.sender().tell("pong")
   }
@@ -45,10 +44,9 @@ class Ponger extends akkajs.Actor {
   constructor() {
     super()
     this.name = "ponger"
-    this.receive = Ponger.receive.bind(this)
+    this.receive = this.receive.bind(this)
   }
-
-  static receive(msg) {
+  receive(msg) {
     console.log("RECEIVED PONG")
     this.sender().tell("ping")
   }
@@ -71,7 +69,7 @@ class Greeter extends akkajs.Actor {
   constructor() {
      super()
      // like what is suggested https://facebook.github.io/react/docs/react-without-es6.html#autobinding
-     this.receive = Greeter.prototype.receive.bind(this)
+     this.receive = this.receive.bind(this)
    }
    receive(msg) {
     console.log(`Hello ${msg}`)
