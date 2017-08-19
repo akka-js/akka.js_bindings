@@ -5,12 +5,12 @@ const akka = require(`akkajs`)
 //ported to JS through ScalaJs with:
 //https://github.com/unicredit/shocon
 
-var config
+let config
 
 //create a configuration (using akka default one as a base):
 config = new akka.Configuration()
 
-//create a configuration with additional keys to the Akka default one:
+//create a configuration with additional keys applied on top of the Akka default one:
 config = new akka.Configuration(`akka {
   loglevel = "DEBUG"
   stdout-loglevel = "DEBUG"

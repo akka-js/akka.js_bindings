@@ -14,11 +14,11 @@ class NodeActor extends akka.Actor {
   constructor(name) {
      super()
      this.name = name
-     this.receive = NodeActor.receive.bind(this)
-     this.preStart = NodeActor.preStart.bind(this)
-     this.postStop = NodeActor.postStop.bind(this)
+     this.receive = this.receive.bind(this)
+     this.preStart = this.preStart.bind(this)
+     this.postStop = this.postStop.bind(this)
    }
-   static receive(msg) {
+   receive(msg) {
      if (msg === "spawn" && count < 10000) {
        var right = this.spawn(new NodeActor("R"))
        var left = this.spawn(new NodeActor("L"))
@@ -28,12 +28,10 @@ class NodeActor extends akka.Actor {
        left.tell("spawn")
      }
    }
-
-   static preStart() {
+   preStart() {
      console.log("starting "+this.path())
    }
-
-   static postStop() {
+   postStop() {
      console.log("stopping "+this.path())
    }
 }

@@ -9,7 +9,7 @@ lazy val akkajs =
       scalaVersion := "2.12.2",
       scalacOptions := Seq("-feature", "-language:_", "-deprecation"),
       libraryDependencies ++= Seq(
-        "org.akka-js" %%% "akkajsactor" % "1.2.5.2"
+        "org.akka-js" %%% "akkajsactor" % "1.2.5.4"
       ),
       scalaJSUseMainModuleInitializer in Global := true,
       scalaJSModuleKind := ModuleKind.CommonJSModule,
