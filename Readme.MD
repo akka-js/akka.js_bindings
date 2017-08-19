@@ -87,23 +87,6 @@ rl.question('What is your name? ', (answer) => {
   greeter.tell(answer)
   rl.close();
 })
-const greeter = system.spawn(
-  new akkajs.Actor(
-    function(name) {
-      console.log(`Hello ${name}`)
-    }
-  )
-)
-
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-})
-
-rl.question('What is your name? ', (answer) => {
-  greeter.tell(answer)
-  rl.close();
-})
 ```
 
 You can use Akka.Js from Node or Browser.
