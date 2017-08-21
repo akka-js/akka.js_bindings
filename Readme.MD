@@ -22,7 +22,7 @@ npm install akkajs
 A simple Ping Pong between two actors looks like:
 
 ```javascript
-const akkajs = require(`akkajs`)
+const akkajs = require("akkajs")
 
 const system = akkajs.ActorSystem.create()
 
@@ -60,8 +60,8 @@ pinger.tell("ping", ponger)
 An Actor based greeter on Node looks like follows:
 
 ```javascript
-const akkajs = require(`akkajs`)
-const readline = require(`readline`)
+const akkajs = require("akkajs")
+const readline = require("readline")
 
 const system = akkajs.ActorSystem.create(`helloworld`)
 
