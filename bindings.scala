@@ -109,7 +109,7 @@ class Actor() extends js.Object {
 
   def self() = newAR(ar)
 
-  def system() = innerContext.system
+  def system() = new ActorSystemImpl(innerContext.system)
 
   //Inner implementation
   var ar: akkaactor.ActorRef = _
