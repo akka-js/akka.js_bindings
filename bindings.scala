@@ -109,6 +109,8 @@ class Actor() extends js.Object {
 
   def self() = newAR(ar)
 
+  def system() = innerContext.system
+
   //Inner implementation
   var ar: akkaactor.ActorRef = _
   var innerContext: akkaactor.ActorContext = _
@@ -123,7 +125,7 @@ class Actor() extends js.Object {
     }
     override def postStop() = jsActor.postStop()
 
-    def receive = {case any => jsActor.receive(any)}
+    def receive = { case any => jsActor.receive(any) }
   }
 
   def spawn(actor: Actor) = new ActorRef({
