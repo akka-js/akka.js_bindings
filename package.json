@@ -1,6 +1,6 @@
 {
   "name": "akkajs",
-  "version": "0.1.6",
+  "version": "0.2.0",
   "main": "./lib/akkajs.js",
   "description": "Akka Actor Framework for JS.",
   "scripts": {
