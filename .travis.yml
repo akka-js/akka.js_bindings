@@ -1,0 +1,30 @@
+language: scala
+
+scala:
+  - 2.12.4
+
+sudo: false
+
+jdk:
+  - oraclejdk8
+
+env:
+  - TRAVIS_NODE_VERSION="7.10.1"
+  - TRAVIS_NODE_VERSION="8.6.0"
+
+install:
+  - rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm && git checkout `git describe --abbrev=0 --tags`) && source ~/.nvm/nvm.sh && nvm install $TRAVIS_NODE_VERSION
+  - npm install
+
+script:
+  - sbt ++$TRAVIS_SCALA_VERSION deploy
+  - export result=$(cd demo; echo Andrea | node helloworld.js)
+  - [ "$result" == "What is your name? Hello Andrea" ] && echo "OK"
+  # Tricks to avoid unnecessary cache updates, from
+  # http://www.scala-sbt.org/0.13/docs/Travis-CI-with-sbt.html
+  - find $HOME/.sbt -name "*.lock" | xargs rm
+  - find $HOME/.ivy2 -name "ivydata-*.properties" | xargs rm
+cache:
+  directories:
+    - $HOME/.ivy2/cache
+    - $HOME/.sbt/boot/
