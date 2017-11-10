@@ -95,12 +95,16 @@ Into the github repo there are few examples under the `demo` folder.
 
 To run the examples simply clone this project go into the `demo` directory and run with:
 ```bash
+https://github.com/akka-js/akka.js_bindings.git
+cd akka.js_bindings/demo
 run <example-name>
 ```
 
 ## Full API
 
-#### Configuration
+
+
+### Configuration
 
 `Configuration` class enable you to configure your `ActorSystem`.
 
@@ -131,7 +135,8 @@ ___Methods___
 |`config.add(moreconfig)`| To add additional customizations to your configuration (e.g. `config.add("akka.log-config-on-start = on")`) |
 |`config.get()`| To obtain the configuration object to construct an `ActorSytem` |
 
-#### ActorSystem
+
+### ActorSystem
 
 An `ActorSystem` is a container and the environment for your Actors.
 
@@ -160,7 +165,9 @@ ___Methods___
 |`system.select(actorpath)`| To obtain the reference to an `Actor` |
 |`system.spawn(actor)`| Will spawn a new instance of the provided `Actor` and return the reference to it |
 
-#### Actor
+
+
+### Actor
 
 An `Actor` is is an execution unit that runs concurrently with other actors.
 
@@ -242,6 +249,8 @@ ___Methods___
 |`this.self()`| Return the reference to itself |
 |`this.system()`| Return the `ActorSystem` this `Actor` belong to |
 |`this.spawn(actor)`| Let spawn an `Actor` as a child of this one, return it's reference |
+
+
 
 ### Compile and contribute
 
