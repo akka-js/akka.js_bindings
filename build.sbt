@@ -7,7 +7,12 @@ lazy val akkajs =
       name := "akkajs",
       organization := "org.akka-js",
       scalaVersion := "2.12.4",
-      scalacOptions := Seq("-feature", "-language:_", "-deprecation"),
+      scalacOptions := Seq(
+        "-feature",
+        "-language:_",
+        "-deprecation",
+        "-P:scalajs:sjsDefinedByDefault"
+      ),
       libraryDependencies ++= Seq(
         "org.akka-js" %%% "akkajsactor" % "1.2.5.6"
       ),

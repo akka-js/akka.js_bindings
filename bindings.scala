@@ -9,7 +9,6 @@ import scala.scalajs.js.annotation.{JSExportTopLevel, ScalaJSDefined}
 import akka.actor._
 
 @JSExportTopLevel("ConfigFactory")
-@ScalaJSDefined
 object ConfigFactory extends js.Object {
 
   def default(): Config = akkajs.Config.default
@@ -18,7 +17,6 @@ object ConfigFactory extends js.Object {
 }
 
 @JSExportTopLevel("Configuration")
-@ScalaJSDefined
 class Configuration(str: String = "") extends js.Object {
 
   var conf = ConfigFactory.default()
@@ -33,7 +31,6 @@ class Configuration(str: String = "") extends js.Object {
 }
 
 @JSExportTopLevel("ActorSystem")
-@ScalaJSDefined
 object ActorSystem extends js.Object {
 
   def create(name: String, config: Config): ActorSystemImpl =
@@ -47,7 +44,6 @@ object ActorSystem extends js.Object {
 
 }
 
-@ScalaJSDefined
 class ActorRef(val actorRef: akkaactor.ActorRef, val sourceRef: akkaactor.ActorRef = null) extends js.Object {
 
   def path(): String = actorRef.path.toString
@@ -58,7 +54,6 @@ class ActorRef(val actorRef: akkaactor.ActorRef, val sourceRef: akkaactor.ActorR
   def kill() = tell(akkaactor.PoisonPill)
 }
 
-@ScalaJSDefined
 class ActorSelection(val actorSel: akkaactor.ActorSelection) extends js.Object {
 
   def path(): String = actorSel.anchorPath.toString
@@ -69,7 +64,6 @@ class ActorSelection(val actorSel: akkaactor.ActorSelection) extends js.Object {
   def kill() = tell(akkaactor.PoisonPill)
 }
 
-@ScalaJSDefined
 class ActorSystemImpl(val system: akkaactor.ActorSystem) extends js.Object {
 
   def select(path: String) = new ActorSelection(
@@ -85,7 +79,6 @@ class ActorSystemImpl(val system: akkaactor.ActorSystem) extends js.Object {
 }
 
 @JSExportTopLevel("Actor")
-@ScalaJSDefined
 class Actor() extends js.Object {
   jsActor =>
 
