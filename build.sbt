@@ -18,7 +18,7 @@ lazy val akkajs =
         val opt = (fullOptJS in Compile).value.data
         val target = baseDirectory.value / "lib" / "akkajs.js"
 
-        IO.copy(Seq((opt -> target)), true)
+        IO.copy(Seq((opt -> target)), CopyOptions(true, false, false))
       }
     )
 
