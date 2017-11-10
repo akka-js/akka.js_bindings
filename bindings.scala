@@ -61,6 +61,8 @@ class ActorRef(val actorRef: akkaactor.ActorRef, val sourceRef: akkaactor.ActorR
 @ScalaJSDefined
 class ActorSelection(val actorSel: akkaactor.ActorSelection) extends js.Object {
 
+  def path(): String = actorSel.anchorPath.toString
+
   def tell(msg: Any) = actorSel.tell(msg, null)
   def tell(msg: Any, sender: akkaactor.ActorRef) = actorSel.tell(msg, sender)
 
@@ -111,6 +113,11 @@ class Actor() extends js.Object {
 
   def system() = new ActorSystemImpl(innerContext.system)
 
+  def spawn(actor: Actor) = new ActorRef({
+      if (actor.name != null) innerContext.actorOf(Props(actor.actor), actor.name)
+      else innerContext.actorOf(Props(actor.actor))
+  })
+
   //Inner implementation
   var ar: akkaactor.ActorRef = _
   var innerContext: akkaactor.ActorContext = _
@@ -127,11 +134,6 @@ class Actor() extends js.Object {
 
     def receive = { case any => jsActor.receive(any) }
   }
-
-  def spawn(actor: Actor) = new ActorRef({
-      if (actor.name != null) innerContext.actorOf(Props(actor.actor), actor.name)
-      else innerContext.actorOf(Props(actor.actor))
-  })
 
   private def newAR(dest: akkaactor.ActorRef) = new ActorRef(dest, ar)
 

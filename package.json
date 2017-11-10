@@ -1,8 +1,8 @@
 {
   "name": "akkajs",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "main": "./lib/akkajs.js",
-  "description": "Akka Actor Framework available for JS.",
+  "description": "Akka Actor Framework for JS.",
   "scripts": {
     "prepublish": "sbt deploy"
   },
