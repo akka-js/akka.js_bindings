@@ -1,6 +1,7 @@
 
 # Akka.Js
 
+[![Build Status](https://travis-ci.org/akka-js/akka.js_bindings.svg?branch=master)](https://travis-ci.org/akka-js/akka.js_bindings)
 [![NPM](https://nodei.co/npm/akkajs.png?compact=true)](https://nodei.co/npm/akkajs/)
 
 This project aim to bring Akka framework available for JS applications.
