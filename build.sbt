@@ -6,7 +6,7 @@ lazy val akkajs =
     .settings(
       name := "akkajs",
       organization := "org.akka-js",
-      scalaVersion := "2.12.4",
+      scalaVersion := "2.12.6",
       scalacOptions := Seq(
         "-feature",
         "-language:_",
@@ -14,7 +14,7 @@ lazy val akkajs =
         "-P:scalajs:sjsDefinedByDefault"
       ),
       libraryDependencies ++= Seq(
-        "org.akka-js" %%% "akkajsactor" % "1.2.5.6"
+        "org.akka-js" %%% "akkajsactor" % "1.2.5.13"
       ),
       scalaJSUseMainModuleInitializer in Global := true,
       scalaJSModuleKind := ModuleKind.CommonJSModule,

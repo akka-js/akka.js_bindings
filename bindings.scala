@@ -1,7 +1,7 @@
 package org.akkajs.bindings
 
 import akka.{actor => akkaactor}
-import eu.unicredit.shocon
+import org.akkajs.shocon
 import com.typesafe.config.Config
 import scalajs.js
 import scala.scalajs.js.annotation.{JSExportTopLevel, ScalaJSDefined}
