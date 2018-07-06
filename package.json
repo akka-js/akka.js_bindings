@@ -1,9 +1,10 @@
 {
   "name": "akkajs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "./lib/akkajs.js",
   "description": "Akka Actor Framework for JS.",
   "scripts": {
+    "test": "ava --timeout=10s",
     "prepublish": "sbt deploy"
   },
   "repository": {
@@ -21,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/akka-js/akka.js_bindings/issues"
   },
-  "homepage": "https://github.com/akka-js/akka.js_bindings#readme"
+  "homepage": "https://github.com/akka-js/akka.js_bindings#readme",
+  "devDependencies": {
+    "ava": "1.0.0-beta.6"
+  }
 }

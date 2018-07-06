@@ -10,7 +10,7 @@ class Greeter extends akka.Actor {
      this.receive = this.receive.bind(this)
    }
    receive(msg) {
-    console.log(`Hello ${msg}`)
+     console.log(`Hello ${msg}`)
    }
 }
 
