@@ -9,8 +9,8 @@ jdk:
   - oraclejdk8
 
 env:
-  - TRAVIS_NODE_VERSION="7.10.1"
   - TRAVIS_NODE_VERSION="8.6.0"
+  - TRAVIS_NODE_VERSION="10.0.0"
 
 install:
   - rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm && git checkout `git describe --abbrev=0 --tags`) && source ~/.nvm/nvm.sh && nvm install $TRAVIS_NODE_VERSION
@@ -19,6 +19,7 @@ install:
 script:
   - sbt ++$TRAVIS_SCALA_VERSION deploy
   - '[ "$(cd demo; echo Andrea | node helloworld.js)" == "What is your name? Hello Andrea" ] && echo "OK"'
+  - npm test
   # Tricks to avoid unnecessary cache updates, from
   # http://www.scala-sbt.org/0.13/docs/Travis-CI-with-sbt.html
   - find $HOME/.sbt -name "*.lock" | xargs rm

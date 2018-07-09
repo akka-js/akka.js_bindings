@@ -246,10 +246,11 @@ ___Methods___
 |`this.path()`| Return the path of the `Actor` |
 |`this.parent()`| Return the array of the children of this `Actor` |
 |`this.children()`| Return the array of the children of this `Actor` |
-|`this.sender()`| Called within the `receive` method return the reference to the `Actor` that sent the message |
+|`this.sender()`| Called within the `receive` method return the reference to the `Actor` that sent the message - inferring the sender has some limitations consider using explicit sender in the `tell` method to have it working reliably |
 |`this.self()`| Return the reference to itself |
 |`this.system()`| Return the `ActorSystem` this `Actor` belong to |
 |`this.spawn(actor)`| Let spawn an `Actor` as a child of this one, return it's reference |
+|`this.become(func)`| Change the current `receive` function to the argument `func` |
 
 
 
