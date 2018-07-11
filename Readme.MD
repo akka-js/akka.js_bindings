@@ -4,10 +4,7 @@
 [![NPM](https://nodei.co/npm/akkajs.png?compact=true)](https://nodei.co/npm/akkajs/)
 [![Build Status](https://travis-ci.org/akka-js/akka.js_bindings.svg?branch=master)](https://travis-ci.org/akka-js/akka.js_bindings)
 
-This project aim to bring Akka framework available for JS applications.
-
-___NOTE___
-the current exposed API is minimal, I will be happy to receive Issues asking for further functionalities to be exposed, and more happy to have PR.
+This project aim to bring the Akka Actor framework available for JS applications.
 
 ## Quick start
 
@@ -98,7 +95,7 @@ To run the examples simply clone this project go into the `demo` directory and r
 ```bash
 https://github.com/akka-js/akka.js_bindings.git
 cd akka.js_bindings/demo
-run <example-name>
+node <example-name>
 ```
 
 ## Full API
@@ -126,6 +123,8 @@ const config = new akkajs.Configuration(`akka {
   stdout-loglevel = "DEBUG"
 }`)
 ```
+
+__NOTE:__ by not using the default configuration you may incur in longer `ActorSystem` startup time.
 
 the full default configuration can be found [here](https://github.com/akka-js/akka.js/blob/v1.2.5.6/akka-js-actor/js/src/main/resources/application.conf)
 
@@ -163,7 +162,7 @@ ___Methods___
 |Method|Description|
 |-------|----------|
 |`system.terminate()`| Shutdown the `ActorSystem` |
-|`system.select(actorpath)`| To obtain the reference to an `Actor` |
+|`system.select(actorpath)`| To obtain a reference to an `Actor` by it's path |
 |`system.spawn(actor)`| Will spawn a new instance of the provided `Actor` and return the reference to it |
 
 
@@ -172,7 +171,7 @@ ___Methods___
 
 An `Actor` is is an execution unit that runs concurrently with other actors.
 
-You have to define a class that `extends` `akkajs.Actor` and use the `spawn` method on an instance of it to run your `Actor` and obtain the reference to it.
+You have to define a class that `extends akkajs.Actor` and use the `spawn` method on an instance of it to run your `Actor` and obtain the reference to it.
 
 ```javascript
 class Example extends akkajs.Actor {
@@ -260,6 +259,11 @@ You need to install Sbt to compile this project from sources.
 Compile with
 ```bash
 sbt compile
+```
+
+You can run Javascript test using:
+```bash
+npm test
 ```
 
 and you can test examples with your modifications by running first:
